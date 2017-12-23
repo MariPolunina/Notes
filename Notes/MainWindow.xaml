@@ -1,0 +1,116 @@
+﻿<Window x:Class="Notes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notes"
+        xmlns:converter="clr-namespace:Notes.Converters"
+        mc:Ignorable="d"
+        Title="Notes" Height="600" Width="1000">
+    <Window.Resources>
+        
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/MainResources.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <local:MainViewModel></local:MainViewModel>
+    </Window.DataContext>
+    <Grid>
+        <Grid.Resources>
+            <converter:ConverterText x:Key="ConvertTitle"></converter:ConverterText>
+            <converter:ConvertDate x:Key="ConvertDate"></converter:ConvertDate>
+            <converter:ConvertAdditionalText x:Key="ConvertText"></converter:ConvertAdditionalText>
+
+        </Grid.Resources>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Style="{StaticResource Header}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
+                    <Button Style="{StaticResource ControlButton}" Command="{Binding SaveNotes}">
+                        <Image Source="Images/Icons/save.png" Margin="5"></Image>
+                    </Button>
+                    <Button Style="{StaticResource ControlButton}" Command="{Binding AddNote}">
+                        <Image Source="Images/Icons/edit.png" Margin="4"></Image>
+                    </Button>
+                    <Button Style="{StaticResource ControlButton}" Command="{Binding RemoveNote}">
+                        <Image Source="Images/Icons/delete.png" Margin="4"></Image>
+                    </Button>
+                    <Button Style="{StaticResource ControlButton}" Command="{Binding SaveNoteDoc}">
+                        <Image Source="Images/Icons/word.png" Margin="4"></Image>
+                    </Button>
+                </StackPanel>
+                <Border Grid.Column="1" Margin="10,0,15,0" Height="28" Style="{StaticResource SearchBorder}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="Images/Icons/search.png" Margin="10,4,5,4"></Image>
+                        <TextBox Text="{Binding TextSearch ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Style="{StaticResource SearchTextBox}"></TextBox>
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.Background>
+                    <ImageBrush ImageSource="Images/background.png" Stretch="UniformToFill"></ImageBrush>
+                </Grid.Background>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox Name="ChooseList" Background="Transparent" ItemContainerStyle="{StaticResource ItemStyle}" SelectedItem="{Binding SelectedNote}" ItemsSource="{Binding NotesForList}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="Auto" Width="{Binding ElementName=ChooseList, Path=ActualWidth}">
+                                <Border Margin="25,15,0,0" Padding="0,0,20,15" BorderBrush="#e4e4e2" BorderThickness="0,0,0,1">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Binding Description,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ConvertTitle}}" 
+                                                       FontFamily="Open Sans" 
+                                                       Foreground="#555555" 
+                                                       FontSize="14" 
+                                                       FontWeight="Bold"></TextBlock>
+                                        <TextBlock Grid.Row="1" FontFamily="Open Sans">
+                                            <TextBlock.Inlines>
+                                                <TextBlock Text="{Binding Date,Converter={StaticResource ConvertDate}}" Foreground="#555555"></TextBlock>
+                                                <TextBlock Text="{Binding Description,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,Converter={StaticResource ConvertText}}" Foreground="#888888"></TextBlock>
+                                            </TextBlock.Inlines>
+                                            </TextBlock>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Grid Grid.Column="1" Margin="10,5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Name="textRow"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding SelectedNote.Date,Converter={StaticResource ConvertDate}}" Foreground="#8f8e8f" FontFamily="Open Sans" HorizontalAlignment="Center" FontSize="14" VerticalAlignment="Center"></TextBlock>
+                    <TextBox Grid.Row="2" VerticalAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" Height="300" Text="{Binding SelectedNote.Description,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchTextBox}"></TextBox>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
+
