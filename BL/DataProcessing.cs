@@ -27,14 +27,16 @@ namespace BL
 
             if (!File.Exists(config.DataReaderAssembly))
             {
-                throw new ArgumentException("Can't find assembly!");
                 Logger.Log.Info($"FileProcessing ctor with {config}");
+                throw new ArgumentException("Can't find assembly!");
+                
             }
                 
             if (config == null)
             {
-                throw new ArgumentNullException("Config is null");
                 Logger.Log.Error($"Config is null");
+                throw new ArgumentNullException("Config is null");
+             
             }
                 
 
@@ -54,8 +56,9 @@ namespace BL
             }
             if (foundClass == null)
             {
-                 throw new InvalidOperationException("Can't find class with IDAL interface");
                 Logger.Log.Error($"Can't find class with IDAL interface");
+                throw new InvalidOperationException("Can't find class with IDAL interface");
+               
             }
                
 
@@ -63,21 +66,24 @@ namespace BL
              reader = Activator.CreateInstance(assembly.FullName, foundClass.FullName).Unwrap() as IDAL;
             if (reader == null)
             {
-                throw new InvalidOperationException("Can't create reader instance");
                 Logger.Log.Error($"Can't create reader instance");
+                throw new InvalidOperationException("Can't create reader instance");
+               
             }
                 
 
             if (String.IsNullOrWhiteSpace(config.DataPath))
             {
-                throw new ArgumentNullException("Config.DataPath is null!");
                 Logger.Log.Error($"Config.DataPath is null!");
+                throw new ArgumentNullException("Config.DataPath is null!");
+                
 
             }
             if (!File.Exists(config.DataPath))
             {
-                throw new FileNotFoundException($"Can't find file {config.DataPath}");
                 Logger.Log.Error($"Can't find file {config.DataPath}");
+                throw new FileNotFoundException($"Can't find file {config.DataPath}");
+                
 
             }
 
@@ -104,8 +110,9 @@ namespace BL
 
         string IDataProcessing.GetNotes()
         {
-           return reader.GetNotes(config.DataPath);
             Logger.Log.Info("Data loaded");
+            return reader.GetNotes(config.DataPath);
+           
         }
     }
 }

@@ -47,11 +47,22 @@ namespace Notes
              
             }
 
-
             //REVIEW: Тут вполне может что-то отвалиться с NRE или чем-то ещё. Надо обработать.
-            Environment.CurrentDirectory = Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location);
-
+            try
+            {
+                Environment.CurrentDirectory = Path.GetDirectoryName(
+                    Assembly.GetExecutingAssembly().Location);
+            }
+            catch(NullReferenceException ex)
+            {
+                Logger.Log.Error("File not found!");
+                throw new NullReferenceException("File not found");
+            }
+            catch(Exception ex)
+            {
+                Logger.Log.Error("Wrong path!");
+                throw new ArgumentException("Wrong path!");
+            }
             Config cfg = new Config();
             cfg.DataPath = Path.GetFullPath(Properties.Settings.Default.DataConnection);
             cfg.DataReaderAssembly = Path.GetFullPath(Properties.Settings.Default.DALAssembly);

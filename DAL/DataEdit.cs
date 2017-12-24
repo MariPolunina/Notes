@@ -15,7 +15,14 @@ namespace DAL
 
         {
             //REVIEW: Могут быть исключения
+            if(String.IsNullOrWhiteSpace(path))
+            {
+                Logger.Log.Error("Path is empty");
+                throw new ArgumentNullException("Path is empty");
+            }
+            
             string st;
+
             using(StreamReader sr = new StreamReader(path))
             {
                 st = sr.ReadToEnd();
@@ -25,6 +32,16 @@ namespace DAL
         public void SaveNotes(string stringlist, string path)
         {
             //REVIEW: И тут могут быть исключения
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                Logger.Log.Error("Path is empty");
+                throw new ArgumentNullException("Path is empty");
+            }
+            if (String.IsNullOrWhiteSpace(stringlist))
+            {
+                Logger.Log.Error("Stringlist is empty");
+                throw new ArgumentNullException("Stringlist is empty");
+            }
             char[] ch = stringlist.ToCharArray();
             using(StreamWriter sw = new StreamWriter(path))
             {
