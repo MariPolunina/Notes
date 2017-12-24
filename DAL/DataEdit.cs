@@ -14,6 +14,7 @@ namespace DAL
         public string GetNotes(string path)
 
         {
+            //REVIEW: Могут быть исключения
             string st;
             using(StreamReader sr = new StreamReader(path))
             {
@@ -23,6 +24,7 @@ namespace DAL
         }
         public void SaveNotes(string stringlist, string path)
         {
+            //REVIEW: И тут могут быть исключения
             char[] ch = stringlist.ToCharArray();
             using(StreamWriter sw = new StreamWriter(path))
             {

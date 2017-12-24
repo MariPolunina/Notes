@@ -46,9 +46,9 @@ namespace Notes
                 throw new ArgumentNullException("ReaderType setting not found!");
              
             }
-               
 
 
+            //REVIEW: Тут вполне может что-то отвалиться с NRE или чем-то ещё. Надо обработать.
             Environment.CurrentDirectory = Path.GetDirectoryName(
                 Assembly.GetExecutingAssembly().Location);
 
